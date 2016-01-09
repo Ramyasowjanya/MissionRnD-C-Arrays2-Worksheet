@@ -14,12 +14,56 @@ ERROR CASES: Return NULL for invalid inputs.
 NOTES:
 */
 
+#include<stdlib.h>
 struct transaction {
 	int amount;
 	char date[11];
 	char description[20];
 };
+int convert_string_into_int(char *input, int start, int end)
+{
+	int index1, result = 0;
+	for (index1 = start; index1 < end; index1++)
+	{
+		result = (result * 10) + input[index1] - '0';
+	}
+	return result;
+}
 
 int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
-	return -1;
+	int count = 0, index, *years, givenYear = 0, *months, *dates, givenDate = 0, givenMon = 0;
+	if (Arr != NULL)
+	{
+		givenDate = convert_string_into_int(date, 0, 2);
+		givenMon = convert_string_into_int(date, 3, 5);
+		givenYear = convert_string_into_int(date, 6, 10);
+		years = (int*)malloc(len*sizeof(int));
+		months = (int*)malloc(len*sizeof(int));
+		dates = (int*)malloc(len*sizeof(int));
+		for (index = 0; index < len; index++)
+		{
+			years[index] = convert_string_into_int(Arr[index].date, 0, 2);
+			years[index] = convert_string_into_int(Arr[index].date, 3, 5);
+			years[index] = convert_string_into_int(Arr[index].date, 6, 10);
+		}
+		for (index = 0; index < len; index++)
+		{
+			if (years[index] == givenYear)
+			{
+				if (months[index] == givenMon&&dates[index]>givenDate)
+				{
+					count++;
+				}
+				else if (months[index] >givenMon)
+				{
+					count++;
+				}
+			}
+			else if (years[index] > givenYear)
+			{
+				count++;
+			}
+		}
+	}
+	return count;
 }
