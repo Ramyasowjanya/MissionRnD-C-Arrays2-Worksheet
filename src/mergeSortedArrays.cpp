@@ -21,6 +21,94 @@ struct transaction {
 	char description[20];
 };
 
+int compare_dates(char *input1,char *input2)
+{
+	int index1,result1 = 0,result2=0;
+	for (index1 = 6; index1 <10; index1++)
+	{
+		result1 = (result1 * 10) + input1[index1] - '0';
+		result2= (result2 * 10) + input2[index1] - '0';
+	}
+	if(result1>result2)
+	return 2;
+	else if(result1==result2)
+	{
+	result1=0;result2=0;
+		for (index1 = 3; index1 <5; index1++)
+		{
+		result1 = (result1 * 10) + input1[index1] - '0';
+		result2= (result2 * 10) + input2[index1] - '0';
+		}
+		if(result1>result2)
+		return 2;
+		else if(result1==result2)
+		{
+		result1=0;result2=0;
+			for (index1 = 0; index1 <2; index1++)
+			{
+			result1 = (result1 * 10) + input1[index1] - '0'	;
+			result2= (result2 * 10) + input2[index1] - '0';
+			}
+			if(result1>result2)	
+			return 2;
+			else if(result1==result2)
+			return 0;
+			return 1;
+		}
+		else
+		return 1;
+	return 0;
+	}
+	return 1;
+}
+
 struct transaction * mergeSortedArrays(struct transaction *A, int ALen, struct transaction *B, int BLen) {
+	int indexa=0,indexb=0,indexr=0,index,equal=0,ret;
+	struct transaction *result;
+	if(A!=NULL&&B!=NULL)
+	{
+		result=(struct transaction *)malloc((ALen+BLen)*sizeof(struct transaction));
+		while(indexa!=ALen&&indexb!=BLen)		
+		{
+			ret=compare_dates(A[indexa].date, B[indexb].date);
+			if(ret==1)
+			{
+				result[indexr]=A[indexa];
+			indexr++;
+			indexa++;
+			}
+			else if(ret==2)
+			{
+			result[indexr]=B[indexb];
+			indexr++;
+			++indexb;
+			}
+			else
+			{
+			result[indexr]=A[indexa];
+			indexr++;
+			result[indexr]=B[indexb];
+			indexr++;
+			indexa++;++indexb;			
+			}	
+		}
+		if(indexa!=ALen){
+			while(indexa!=ALen)
+			{
+			result[indexr]=A[indexa];
+			indexr++;
+			indexa++;
+			}		
+		}
+		if(indexb!=BLen){
+			while(indexb!=BLen)
+			{
+			result[indexr]=B[indexb];
+			indexr++;
+			indexb++;
+			}		
+		}
+		return result;
+	}
 	return NULL;
 }
